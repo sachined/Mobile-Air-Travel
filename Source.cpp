@@ -2,8 +2,7 @@
 #include "World_Planes.h"
 
 int main() {
-	int number;
-
+	
 	mapQueue mainMap = mapQueue();
 
 	airPort* firstAir = new airPort();
@@ -17,10 +16,6 @@ int main() {
 	mainMap.add(&secondAir);
 
 	mainMap.add(&thirdAir);
-
-	number = firstAir->operator();
-
-	std::cout << "First plane's number " << number;
 
 	std::cout << "Second ";
 	
