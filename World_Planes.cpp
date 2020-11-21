@@ -1,18 +1,12 @@
 #include "World_Planes.h"
 #include <utility> // std::move
 
-void Building::Name()
-{
-	std::cout << "I am a BUILDING!\n\n";
-}
+void Building::Name()	{	std::cout << "I am a BUILDING!\n\n";	}
 
 /* AIRPORT ===============================================
-
 This class will store airport info, such as city and code
-
 Can be used in mapQueue (a vector of pointers)
 */
-
 // Default Constructor
 airPort::airPort(): airName("DogWood Shining"), cityName("Phoenicia"), airCode("PNA")  {}
 
@@ -20,19 +14,13 @@ airPort::airPort(): airName("DogWood Shining"), cityName("Phoenicia"), airCode("
 airPort::airPort(std::string placeName, std::string placeCity, std::string placeCode) : airName(placeName), cityName(placeCity), airCode(placeCode) {}
 
 // Destructor
-airPort::~airPort() {
-	/*setCityName("");
-	setAirCode("");*/
-	displayNullAir();
-}
+airPort::~airPort() {	displayNullAir();}
 
 // Copy Constructor
 airPort::airPort(const airPort& other) : airName(other.airName), cityName(other.cityName), airCode(other.airCode)
 {
 	std::cout << "Copy constructor.." << std::endl;
-	//airPort* ptr = new airPort(obj.getCityName(), obj.getCode());
 	*this = other;
-
 }
 
 // Move Constructor (This will move the pointer of other to this and then makes other nullptr)
@@ -55,9 +43,6 @@ airPort& airPort::operator=(const airPort& other) {
 // Move Assignment operator
 airPort& airPort::operator=(airPort&& other)	{
 	this->PlaneNumber = std::move(other.PlaneNumber);
-	//this->cityName = std::move(other.cityName);
-	//this->airCode = std::move(other.airCode);
-	//other.PlaneNumber = nullptr;
 	return *this;
 }
 
@@ -72,34 +57,31 @@ void airPort::setName(std::string name) {	airName = name;	}
 void airPort::getName()	{	std::cout << GetAir();	}
 
 std::string airPort::GetAir() const	{	return airName;	}
+
 // ---------------------------------------------------
 // +++++++++++++++++++++++++++++++++++++++++++++++++++
 // Setting name of city where airport is located
 void airPort::setCityName(std::string place) {	cityName = place;	}
 
 // Getting name of city where airport is located
-void airPort::getCityName() {
-	std::cout << GetCityName();
-}
+void airPort::getCityName() {	std::cout << GetCityName();	}
 
 std::string airPort::GetCityName() const {	return cityName;	}
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++
 int airPort::PlaneNumber = 4423;
 
 //static function
-void airPort::printPlane() {
-	std::cout << "Plane # is " << airPort::PlaneNumber << '\n';
-}
+void airPort::printPlane() {	std::cout << "Plane # is " << airPort::PlaneNumber << '\n';	}
 
 //Operations regarding airCode
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 void airPort::setAirCode(std::string code) {	airCode = code;	}
 
-void airPort::getAirCode() {
-	std::cout << GetCode();
-}
+void airPort::getAirCode() {	std::cout << GetCode();	}
 
 std::string airPort::GetCode() const {	return airCode;	}
+
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 void airPort::displayAir() {
 	std::cout << "\nAirport currently:\n";
@@ -109,6 +91,7 @@ void airPort::displayAir() {
 	std::cout << "\\\n";
 }
 
+// Very problematic when it comes to copy and move
 void airPort::freeAirSpace() {
 	setAirCode("");
 	setCityName("");
@@ -122,11 +105,10 @@ void airPort::displayNullAir() {
 }
 
 // ==============================================================
-/* MAP QUEUE ****************************************************
 
+/* MAP QUEUE ****************************************************
 This will store a list of airports that can be used
 */
-
 mapQueue::mapQueue()	{
 	std::cout << "A map is being created...\n\n";
 	size = 0;
@@ -179,26 +161,20 @@ void mapQueue::add(airPort** newPlace) {
 	currentAir = nullptr;
 }
 
-
 // Removing from vector 
-// still not completely BUGS FREE
-
 /* Towards the end of the function, the vector is not properly populated
 	For example, if there are 3 airports and one is removed,
 	3rd airport has two places occupied...
 	This is still an oncoming fix
 	PLEASE BE CAREFUL!
 
-	11/20/20 Fixed 
-
+	11/20/20 Fixed
 */
-
 void mapQueue::remove(airPort** oldPlace)	{
 
 	bool found = false;
 	unsigned pos = 0;
 	
-
 	// iterate over all elements in vector
 	for (auto & elem : cities)	{
 		if (elem == *oldPlace && !found)
@@ -266,5 +242,4 @@ void mapQueue::sortByName(bool flag)
 		{	return a->GetAir() > b->GetAir(); });
 	}
 }
-
 // **************************************************************************
