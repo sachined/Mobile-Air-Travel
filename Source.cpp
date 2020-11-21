@@ -1,8 +1,7 @@
-
 #include "World_Planes.h"
 
 int main() {
-	
+
 	mapQueue mainMap = mapQueue();
 
 	airPort* firstAir = new airPort();
@@ -17,7 +16,7 @@ int main() {
 
 	mainMap.add(&thirdAir);
 
-	std::cout << "Second ";
+	std::cout << "\nSecond ";
 	
 	secondAir->printPlane();
 
@@ -27,7 +26,7 @@ int main() {
 	// MOve constructor was done!!
 	airPort* fifth (std::move(firstAir));
 
-	//mainMap.add(&fourthAir);
+	/*mainMap.add(&fourthAir);*/
 
 	mainMap.sortByCity(false);
 
@@ -44,28 +43,15 @@ int main() {
 	mainMap.sortByName(true);
 
 	mainMap.display();
+
+	Building* a = new airPort();
+
+	a->Name();
+
+	a->getName();
+
+	std::cout << '\n';
 	
-	//firstAir->freeAirSpace();
-	//firstAir = nullptr; 
-	//delete firstAir;
-
-	//secondAir->freeAirSpace();
-	//secondAir = nullptr;
-	//delete secondAir;
-
-	//thirdAir->freeAirSpace();
-	//thirdAir = nullptr;
-	//delete thirdAir;
-
-
-	//fourthAir->freeAirSpace();
-	//fourthAir = nullptr;
-	//delete fourthAir;
-
-	//fifth->freeAirSpace();
-	//fifth = nullptr;
-	//delete fifth;
-
 	mainMap.sortByCity(true);
 
 	mainMap.display();
