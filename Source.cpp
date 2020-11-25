@@ -4,56 +4,56 @@ int main() {
 
 	mapQueue mainMap = mapQueue();
 
-	airPort* firstAir = new airPort();
+	mainMap.add();
+	mainMap.add("Thunder Sonics", "Oklahoma City", "OKC");
+	mainMap.add("Orange Promenade", "Tuscaloosa", "TSC");
 
-	mainMap.add(&firstAir);
+	std::cout << "\nThird ";
 
-	airPort* secondAir = new airPort("Orange Promenade","Tuscaloosa", "TSC");
-
-	airPort* thirdAir = new airPort("Thunder Sonics","Oklahoma City", "OKC");
-
-	mainMap.add(&secondAir);
-
-	mainMap.add(&thirdAir);
-
-	std::cout << "\nSecond ";
-	
-	secondAir->printPlane();
+	airPort* newHeart = new airPort();
+	newHeart->printPlane();
 
 	// Copy constructor was done!!
-	airPort* fourthAir(secondAir);
-
+	airPort* fourthAir(newHeart);
 	// MOve constructor was done!!
-	airPort* fifth (std::move(firstAir));
+	airPort* fifth(std::move(newHeart));
 
-	/*mainMap.add(&fourthAir);*/
+	mainMap.add(fourthAir);
 
 	mainMap.sortByCity(false);
-
 	mainMap.display();
 
-	/*mainMap.add(&fifth);*/
+	mainMap.add(fifth);
 
 	mainMap.sortByCode(true);
-
 	mainMap.display();
-
-	mainMap.remove(&secondAir);
 
 	mainMap.sortByName(true);
-
 	mainMap.display();
 
-	Building* a = new airPort();
+	mainMap.add("Mineta", "San Jose", "SJC");
+
+	Building* a = new airPort("Frogger", "Seattle", "STA");
 
 	a->Name();
-
 	a->getName();
+	std::cout << "\n\n";
 
-	std::cout << '\n';
-	
+	mainMap.add(a);
+
 	mainMap.sortByCity(true);
+	mainMap.display();
 
+	mainMap.remove(newHeart);
+	mainMap.remove(fourthAir);
+	mainMap.remove(fifth);
+
+	mainMap.sortByCode(false);
+	mainMap.display();
+
+	mainMap.remove(a);
+
+	mainMap.sortByName(false);
 	mainMap.display();
 
 	return 0;
