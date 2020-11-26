@@ -7,7 +7,7 @@
 */
 void Building::Name()
 {
-	std::cout << "\nI am a BUILDING!\n\n";
+	std::cout << "I am a BUILDING!\n\n";
 }
 //--------------------------------------------------
 /*=================  AIRPORT  ==============================
@@ -38,6 +38,7 @@ airPort::airPort(airPort&& other) noexcept {
 
 // Copy Assignment operator
 airPort& airPort::operator=(const airPort& other) {
+	std::cout << "Copy constructor.." << std::endl;
 	if (this == &other)
 		return *this;
 	*this = other;
@@ -46,11 +47,17 @@ airPort& airPort::operator=(const airPort& other) {
 
 // Move Assignment operator (BETA)
 airPort& airPort::operator=(airPort&& other) noexcept {
+	std::cout << "Move constructor.." << std::endl;
 	return *this;
 }
 
 // This will display the plane number through a function
 int airPort::operator()() const { return this->PlaneNumber; }
+
+void airPort::Name()
+{
+	std::cout << "I am an Airport!\n\n";
+}
 
 // ---------------- NAME of airport -------------------------
 // Setting name
@@ -109,9 +116,11 @@ This class that will be used with mapQueue
 This will be used for freeing pointers at end of
 program to prevent memory leak	*/
 void airPort_deleter::operator()(airPort*& e) {
+	std::string airName;
+
 	if (e == NULL)
 		return;
-	std::string airName = e->GetAir();
+	airName = e->GetAir();
 	e->~airPort();
 	e = NULL;
 	delete e;
@@ -151,49 +160,33 @@ void mapQueue::display() {
 // Adding to the vector with airPort pointer via reference
 void mapQueue::add(airPort*& newPlace) {
 	currentAir = newPlace;
-	// should seperate for function (too verbiose)
-	cities.push_back(currentAir);
-	currentAir->getCityName();
-	std::cout << " has been added!\n";
-	size++;
-	currentAir = nullptr;
-	// ..................
+	push_ptr(currentAir);
 }
 
 // Adding the vector with Building pointer via reference
 void mapQueue::add(Building*& newBuilding) {
 	// Must be casted via dynamic_cast to enable push into vector
 	currentAir = dynamic_cast<airPort*>(newBuilding);
-	// should seperate for function (too verbiose)
-	cities.push_back(currentAir);
-	currentAir->getCityName();
-	std::cout << " has been added!\n";
-	size++;
-	currentAir = nullptr;
-	// ..................
+	push_ptr(currentAir);
 }
 
 void mapQueue::add() {
 	currentAir = new airPort();
-	// should seperate for function (too verbiose)
-	cities.push_back(currentAir);
-	currentAir->getCityName();
-	std::cout << " has been added!\n";
-	size++;
-	currentAir = nullptr;
-	// ..................
+	push_ptr(currentAir);
 }
 
 void mapQueue::add(std::string name, std::string city, std::string code) {
-
 	currentAir = new airPort(name, city, code);
-	// should seperate for function (too verbiose)
+	push_ptr(currentAir);
+}
+
+// This replaces the same lines in various add functions (Made 11/26/20)
+void mapQueue::push_ptr(airPort*& currentAir) {
 	cities.push_back(currentAir);
 	currentAir->getCityName();
-	std::cout << " has been added!\n";
+	std::cout << " has been added!\n\n";
 	size++;
 	currentAir = nullptr;
-	// ..................
 }
 
 // Removing from vector 
@@ -204,58 +197,39 @@ void mapQueue::add(std::string name, std::string city, std::string code) {
 	This is still an oncoming fix
 	PLEASE BE CAREFUL!
 	11/20/20 Fixed
+	11/26/20 Refactored
 */
 void mapQueue::remove(airPort*& oldPlace) {
-
 	bool found = false;
-	unsigned pos = 0;
 
 	currentAir = oldPlace;
-	// should seperate for function (too verbiose)
-	// iterate over all elements in vector
-	for (auto& elem : cities) {
-		if ((elem == currentAir || elem->GetAir() == currentAir->GetAir()) && !found)
-		{
-			found = true;
-			std::cout << elem->GetCityName() << " found!\n";
-			currentAir = nullptr;
-			delete currentAir;
-			std::cout << "This airport is deleted\n";
-			break;
-		}
-		else
-			pos++;
-	}
-	for (unsigned i = pos; i < cities.size(); i++) {
-		if (i == cities.size() - 1)
-		{
-			cities.resize(i);
-			size = i;
-			cities.shrink_to_fit();
-			break;
-		}
-		cities[i] = cities[i + 1];
-	}
-	// ..................
+	remove_ptr(currentAir, found);
+
 	oldPlace = nullptr;
 	delete oldPlace;
 }
 
 void mapQueue::remove(Building*& newBuilding) {
 	bool found = false;
-	unsigned pos = 0;
 
 	currentAir = dynamic_cast<airPort*>(newBuilding);
-	// should seperate for function (too verbiose)
+	remove_ptr(currentAir, found);
+
+	newBuilding = nullptr;
+	delete newBuilding;
+}
+
+void mapQueue::remove_ptr(airPort*& currentAir, bool& found) {
+	unsigned pos = 0;
 	// iterate over all elements in vector
 	for (auto& elem : cities) {
 		if (elem == currentAir && !found)
 		{
 			found = true;
-			std::cout << elem->GetCityName() << " found!\n";
+			std::cout << elem->GetCityName() << " found! ";
 			currentAir = nullptr;
 			delete currentAir;
-			std::cout << "This airport is deleted\n";
+			std::cout << "This airport is deleted\n\n";
 			break;
 		}
 		else
@@ -271,14 +245,13 @@ void mapQueue::remove(Building*& newBuilding) {
 		}
 		cities[i] = cities[i + 1];
 	}
-	// ..................
-	newBuilding = nullptr;
-	delete newBuilding;
 }
 
 // Sorting functions @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // Sort by city 
 void mapQueue::sortByCity(bool flag) {
+	std::string status = flag ? "(A - Z)" : "(Z - A)";
+	std::cout << "Sorted by City " << status;
 	if (flag) {
 		std::sort(cities.begin(), cities.end(), [](airPort* a, airPort* b)
 			{	return a->GetCityName() < b->GetCityName(); });
@@ -291,6 +264,8 @@ void mapQueue::sortByCity(bool flag) {
 }
 // Sort by air code
 void mapQueue::sortByCode(bool flag) {
+	std::string status = flag ? "(A - Z)" : "(Z - A)";
+	std::cout << "Sorted by Code " << status;
 	if (flag) {
 		std::sort(cities.begin(), cities.end(), [](airPort* a, airPort* b)
 			{	return a->GetCode() < b->GetCode(); });
@@ -302,8 +277,9 @@ void mapQueue::sortByCode(bool flag) {
 	}
 }
 // Sort by airport name
-void mapQueue::sortByName(bool flag)
-{
+void mapQueue::sortByName(bool flag) {
+	std::string status = flag ? "(A - Z)" : "(Z - A)";
+	std::cout << "Sorted by Name " << status;
 	if (flag) {
 		std::sort(cities.begin(), cities.end(), [](airPort* a, airPort* b)
 			{	return a->GetAir() < b->GetAir(); });
@@ -314,4 +290,4 @@ void mapQueue::sortByName(bool flag)
 			{	return a->GetAir() > b->GetAir(); });
 	}
 }
-// **************************************************************************
+// ************************** MAP QUEUE END *****************************

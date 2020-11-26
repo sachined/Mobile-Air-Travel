@@ -48,10 +48,13 @@ public:
 	// This will display the plane number through a function (airPort())
 	int operator()() const;
 
+	// This will override Name() of Building
+	void Name();
+
 	//Operations regarding airName
 	// ---------------------------------
 	void setName(std::string name);
-	virtual void getName();
+	virtual void getName() override;
 	std::string GetAir() const;
 
 	//Operations regarding cityName
@@ -112,10 +115,14 @@ public:
 	void add();
 	// Add via string parameters
 	void add(std::string, std::string, std::string);
+	// function to shorten add function
+	void push_ptr(airPort*&);
 	// Remove via reference of airPort pointer
 	void remove(airPort*&);
 	// Remove via reference of Building pointer
 	void remove(Building*&);
+	void remove_ptr(airPort*&, bool&);
+
 
 	// Sorting functions by city, code, and name
 	void sortByCity(bool);

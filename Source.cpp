@@ -8,13 +8,15 @@ int main() {
 	mainMap.add("Thunder Sonics", "Oklahoma City", "OKC");
 	mainMap.add("Orange Promenade", "Tuscaloosa", "TSC");
 
-	std::cout << "\nThird ";
+	std::cout << "Third ";
 
 	airPort* newHeart = new airPort();
 	newHeart->printPlane();
 
 	// Copy constructor was done!!
 	airPort* fourthAir(newHeart);
+
+	fourthAir->Name();
 	// MOve constructor was done!!
 	airPort* fifth(std::move(newHeart));
 
