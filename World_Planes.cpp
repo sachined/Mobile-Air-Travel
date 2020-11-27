@@ -31,23 +31,41 @@ airPort::airPort(const airPort& other) : airName(other.airName), cityName(other.
 
 // Move Constructor (BETA)
 // (This will move the pointer of other to this and then makes other nullptr)
-airPort::airPort(airPort&& other) noexcept {
+airPort::airPort(airPort&& other) noexcept	{
 	std::cout << "Move constructor.." << std::endl;
-	*this = std::move(other);
+	// Copy data from source object
+	airName = other.airName;
+	cityName = other.cityName;
+	airCode = other.airCode;
+
+	other.airName = nullptr;
+	other.cityName = nullptr;
+	other.airCode = nullptr;
 }
 
 // Copy Assignment operator
 airPort& airPort::operator=(const airPort& other) {
 	std::cout << "Copy constructor.." << std::endl;
-	if (this == &other)
-		return *this;
-	*this = other;
+	if (this != &other) {
+		airName = other.airName;
+		cityName = other.cityName;
+		airCode = other.airCode;
+	}
 	return *this;
 }
 
 // Move Assignment operator (BETA)
 airPort& airPort::operator=(airPort&& other) noexcept {
 	std::cout << "Move constructor.." << std::endl;
+	if (this != &other) {
+		airName = other.airName;
+		cityName = other.cityName;
+		airCode = other.airCode;
+
+		other.airName = nullptr;
+		other.cityName = nullptr;
+		other.airCode = nullptr;
+	}
 	return *this;
 }
 
@@ -117,7 +135,7 @@ This will be used for freeing pointers at end of
 program to prevent memory leak	*/
 void airPort_deleter::operator()(airPort*& e) {
 	std::string airName;
-
+	
 	if (e == NULL)
 		return;
 	airName = e->GetAir();
@@ -181,7 +199,7 @@ void mapQueue::add(std::string name, std::string city, std::string code) {
 }
 
 // This replaces the same lines in various add functions (Made 11/26/20)
-void mapQueue::push_ptr(airPort*& currentAir) {
+void mapQueue::push_ptr(airPort*& currentAir)	{
 	cities.push_back(currentAir);
 	currentAir->getCityName();
 	std::cout << " has been added!\n\n";
@@ -201,7 +219,7 @@ void mapQueue::push_ptr(airPort*& currentAir) {
 */
 void mapQueue::remove(airPort*& oldPlace) {
 	bool found = false;
-
+	
 	currentAir = oldPlace;
 	remove_ptr(currentAir, found);
 
@@ -211,7 +229,7 @@ void mapQueue::remove(airPort*& oldPlace) {
 
 void mapQueue::remove(Building*& newBuilding) {
 	bool found = false;
-
+	
 	currentAir = dynamic_cast<airPort*>(newBuilding);
 	remove_ptr(currentAir, found);
 
@@ -219,7 +237,7 @@ void mapQueue::remove(Building*& newBuilding) {
 	delete newBuilding;
 }
 
-void mapQueue::remove_ptr(airPort*& currentAir, bool& found) {
+void mapQueue::remove_ptr(airPort*& currentAir, bool& found)	{
 	unsigned pos = 0;
 	// iterate over all elements in vector
 	for (auto& elem : cities) {
@@ -251,7 +269,7 @@ void mapQueue::remove_ptr(airPort*& currentAir, bool& found) {
 // Sort by city 
 void mapQueue::sortByCity(bool flag) {
 	std::string status = flag ? "(A - Z)" : "(Z - A)";
-	std::cout << "Sorted by City " << status;
+	std::cout << "Sorted by City "<< status;
 	if (flag) {
 		std::sort(cities.begin(), cities.end(), [](airPort* a, airPort* b)
 			{	return a->GetCityName() < b->GetCityName(); });
@@ -277,7 +295,7 @@ void mapQueue::sortByCode(bool flag) {
 	}
 }
 // Sort by airport name
-void mapQueue::sortByName(bool flag) {
+void mapQueue::sortByName(bool flag)	{
 	std::string status = flag ? "(A - Z)" : "(Z - A)";
 	std::cout << "Sorted by Name " << status;
 	if (flag) {
@@ -289,5 +307,24 @@ void mapQueue::sortByName(bool flag) {
 		std::sort(cities.begin(), cities.end(), [](airPort* a, airPort* b)
 			{	return a->GetAir() > b->GetAir(); });
 	}
+}
+// Aggregate sort
+void mapQueue::sort(bool flag, int choice) {
+	
+	switch (choice) {
+		case NAME:
+			sortByName(flag);
+			break;
+		case CITY:
+			sortByCity(flag);
+			break;
+		case CODE:
+			sortByCode(flag);
+			break;
+		default:
+			std::cout << "This is not sorted";
+			break;
+	}
+	display();
 }
 // ************************** MAP QUEUE END *****************************

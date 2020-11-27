@@ -1,4 +1,8 @@
 #pragma once
+// The following codes are for sorting 
+#define NAME 0
+#define CITY 1
+#define CODE 2
 
 #include <iostream>
 #include <vector>
@@ -90,7 +94,6 @@ struct airPort_deleter {
 	void operator()(airPort*& e); // important to take pointer by reference
 };
 
-
 /*
 	mapQueue class - Hold a vector of airPort pointers, size(amount) of pointers,
 					 and internal airPort pointer
@@ -121,11 +124,13 @@ public:
 	void remove(airPort*&);
 	// Remove via reference of Building pointer
 	void remove(Building*&);
+	// function to shorten remove function
 	void remove_ptr(airPort*&, bool&);
-
 
 	// Sorting functions by city, code, and name
 	void sortByCity(bool);
 	void sortByCode(bool);
 	void sortByName(bool);
+	// This function uses all three sort functions from above
+	void sort(bool, int);
 };

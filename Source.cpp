@@ -1,4 +1,5 @@
 #include "World_Planes.h"
+#include "Goods.h"
 
 int main() {
 
@@ -22,16 +23,18 @@ int main() {
 
 	mainMap.add(fourthAir);
 
-	mainMap.sortByCity(false);
-	mainMap.display();
+	// Sorted by name of airport
+	mainMap.sort(true, NAME);
+	mainMap.sort(false, NAME);
 
 	mainMap.add(fifth);
 
-	mainMap.sortByCode(true);
-	mainMap.display();
+	// Sorted by city name
+	mainMap.sort(true, CITY);
+	mainMap.sort(false, CITY);
 
-	mainMap.sortByName(true);
-	mainMap.display();
+	// Sorted by aircode
+	mainMap.sort(true, CODE);
 
 	mainMap.add("Mineta", "San Jose", "SJC");
 
@@ -43,20 +46,16 @@ int main() {
 
 	mainMap.add(a);
 
-	mainMap.sortByCity(true);
-	mainMap.display();
+	// Non-sorting (default)
+	mainMap.sort(true, 3);
 
 	mainMap.remove(newHeart);
 	mainMap.remove(fourthAir);
 	mainMap.remove(fifth);
 
-	mainMap.sortByCode(false);
-	mainMap.display();
+	mainMap.sort(false, CODE);
 
 	mainMap.remove(a);
-
-	mainMap.sortByName(false);
-	mainMap.display();
 
 	return 0;
 }
