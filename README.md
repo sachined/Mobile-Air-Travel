@@ -1,6 +1,5 @@
 ## 1. Mobile-Air-Travel
 
-```markdown
 # ✈️ Mobile Air Travel
 
 A C++ airline simulation game where you manage a network of airports — transporting goods and passengers to earn revenue and expand your fleet.
@@ -26,7 +25,8 @@ Plane / Person / Goods  ← transport entities
 - **Nov 21, 2020** — Added `Building` base class; fixed remove bug; added sort/display functions; improved documentation
 
 ## Build
-```bash
+```
+bash
 g++ -std=c++11 -o air_travel *.cpp
 ./air_travel
 ```
