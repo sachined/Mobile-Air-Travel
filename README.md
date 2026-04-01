@@ -1,5 +1,3 @@
-## 1. Mobile-Air-Travel
-
 # ✈️ Mobile Air Travel
 
 A C++ airline simulation game where you manage a network of airports — transporting goods and passengers to earn revenue and expand your fleet.
